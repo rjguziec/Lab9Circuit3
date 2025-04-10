@@ -12,6 +12,14 @@
   D11: MOSI (pin 10) on 74165
   D12: MISO (pin 9) on 74165
   D13: SLK (pin 2) on 74165
+
+   * * *  NOTE * * *
+   This code has yet to be completed and is still in the stages of beiing build.
+   Check list:
+   - RGBness Implementationm
+   - Reading data?
+   - Writing Data?
+   - Formal test of comparision
 */
 
 // Gross global variables
@@ -55,13 +63,11 @@ ISR(INT0_vect){
   PORTD |= bcdArray[pNum];  // Set BCD Output
 }
 
-void spiTxRx(unsigned char dataToWrite) {
+void spiTxRx(unsigned char data) {
   PORTB &= 0xFB; // enable SPI write
-  SPDR = dataToWrite;
-
-  // Wait until transfer is complete
-  while (!(SPSR & (1 << SPIF)));
-
+  SPDR = data;
+  
+  while (!(SPSR & (1 << SPIF)));  // Wait until transfer is complete
   PORTB |= 0x04; // disable SPI write
   
   return SPDR;
